@@ -1,0 +1,22 @@
+{
+  "name": "boleto-validator",
+  "version": "1.0.0",
+  "description": "Validador de boletos e pagamento de concessionárias.",
+  "main": "src/Server.js",
+  "repository": "https://github.com/gustavo-amaro/boleto-validator",
+  "author": "Gustavo Amaro dos Santos",
+  "license": "MIT",
+  "private": true,
+  "scripts": {
+    "start": "node src/Server.js",
+    "dev": "nodemon src/Server.js --ignore __tests__"
+  },
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^16.0.0",
+    "express": "^4.17.2"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.15"
+  }
+}
