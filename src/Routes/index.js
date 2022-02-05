@@ -10,7 +10,7 @@ class Routes {
 
   registerRoutes() {
     const boletoController = new BoletoController();
-    this.router.get("/boleto/:barCode", boletoController.validateBoleto);
+    this.router.get("/boleto/:digitableLine", boletoController.validateBoleto);
   }
 
   getRouter() {
