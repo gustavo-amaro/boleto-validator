@@ -12,7 +12,7 @@ Um simples validador de boletos.
     2. Instalar as depedências com yarn install ou npm install
     3. Copiar o conteúdo do arquivo .env.example para um novo arquivo chamado .env
     4. Rodar o comando 'start'(npm run start ou yarn start)
-    5. Com isso a aplicação estará pronta para ser usada rodando na porta 8080
+    5. Com isso a aplicação estará pronta para ser usada rodando na porta 8080 (a porta pode ser alterado no .env)
 
 A aplicação expõe um endpoint do tipo 'GET' no endereço `http://localhost:8080/boleto/{linhaDigitávelDoBoleto}`, onde é retornado um json contendo:
 

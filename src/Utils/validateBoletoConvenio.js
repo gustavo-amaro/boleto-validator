@@ -75,14 +75,14 @@ const modulo11 = (block) => {
     sum += value * (2 + (index >= 8 ? index - 8 : index));
 
     if (code.length == index + 1) {
-      let restoDivisao = sum % 11;
+      let restDivision = sum % 11;
 
-      if (restoDivisao == 0 || restoDivisao == 1) {
+      if (restDivision == 0 || restDivision == 1) {
         roundedFieldMultiplier = 0;
-      } else if (restoDivisao == 10) {
+      } else if (restDivision == 10) {
         roundedFieldMultiplier = 1;
       } else {
-        roundedFieldMultiplier = Math.ceil(somatorio / 11) * 11 - somatorio;
+        roundedFieldMultiplier = Math.ceil(sum / 11) * 11 - sum;
       }
 
       return roundedFieldMultiplier;
@@ -106,7 +106,7 @@ const getAmount = (digitableLine) => {
     amount = digitableLine.slice(4, 11) + digitableLine.slice(12, 16);
     finalAmount = getFormatedAmount(amount);
   } else {
-    finalAmount = 0;
+    finalAmount = "0.00";
   }
 
   return finalAmount;

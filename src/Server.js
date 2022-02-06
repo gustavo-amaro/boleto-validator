@@ -1,5 +1,5 @@
 require("dotenv").config({
-  path: process.env.NODE_ENV === "test" ? ".env.test" : ".env",
+  path: ".env",
 });
 const express = require("express");
 const cors = require("cors");
