@@ -1,4 +1,4 @@
-# Validador de boletos - Desafio Ewally
+# Validador de boletos - Desafio
 
 Um simples validador de boletos.
 
