@@ -1,4 +1,8 @@
-const { reverseString } = require("./Commons");
+const {
+  reverseString,
+  getFormatedAmount,
+  digitableLineToBarCode,
+} = require("./Commons");
 
 const modulo10 = (block, callback) => {
   const blockSize = block.length - 1;
@@ -10,7 +14,8 @@ const modulo10 = (block, callback) => {
 
   let sum = 0;
 
-  code.forEach(function (value, index) {
+  let index = 0;
+  for (let value of code) {
     let newValue = value * (index % 2 == 0 ? 2 : 1);
 
     /**
@@ -35,9 +40,13 @@ const modulo10 = (block, callback) => {
        */
       let roundedFieldMultiplier = Math.ceil(sum / 10) * 10 - sum;
 
-      callback(roundedFieldMultiplier);
+      return roundedFieldMultiplier;
     }
-  });
+
+    index++;
+  }
+
+  return null;
 };
 
 const modulo11 = (block, callback) => {
@@ -49,9 +58,10 @@ const modulo11 = (block, callback) => {
   code = reverseString(code);
   code = code.split("");
 
-  let sum = 0;
+  let sum = 0,
+    index = 0;
 
-  code.forEach(function (value, index) {
+  for (let value of code) {
     sum += value * (2 + (index >= 8 ? index - 8 : index));
 
     if (code.length == index + 1) {
@@ -65,41 +75,72 @@ const modulo11 = (block, callback) => {
         roundedFieldMultiplier = Math.ceil(somatorio / 11) * 11 - somatorio;
       }
 
-      callback(roundedFieldMultiplier);
+      return roundedFieldMultiplier;
     }
-  });
+
+    index++;
+  }
+
+  return null;
 };
 
-const validateBoletoConvenio = (barCode, res) => {
+const getAmount = (digitableLine) => {
+  digitableLine = digitableLine.replace(/[^0-9]/g, "");
+  const idAmount = digitableLine.slice(2, 3);
+  const isEffectiveAmmount = idAmount === "6" || idAmount === "8";
+
+  let amount = "";
+  let finalAmount;
+
+  if (isEffectiveAmmount) {
+    amount = digitableLine.slice(4, 11) + digitableLine.slice(12, 16);
+    finalAmount = getFormatedAmount(amount);
+  } else {
+    finalAmount = 0;
+  }
+
+  return finalAmount;
+};
+
+const validateBoletoConvenio = (digitableLine, res) => {
   let blocks = [];
 
-  blocks[0] = barCode.substr(0, 12);
-  blocks[1] = barCode.substr(12, 12);
-  blocks[2] = barCode.substr(24, 12);
-  blocks[3] = barCode.substr(36, 12);
+  blocks[0] = digitableLine.substr(0, 12);
+  blocks[1] = digitableLine.substr(12, 12);
+  blocks[2] = digitableLine.substr(24, 12);
+  blocks[3] = digitableLine.substr(36, 12);
 
   /**
    * Verifica se é o modulo 10 ou modulo 11.
    * Se o 3º digito for 6 ou 7 é modulo 10, se for 8 ou 9, então modulo 11.
    */
-  let isModulo10 = ["6", "7"].indexOf(barCode[2]) != -1;
-  let valid = 0;
+  let isModulo10 = ["6", "7"].indexOf(digitableLine[2]) != -1;
 
-  blocks.forEach(function (block, index) {
+  let index = 0;
+  for (let block of blocks) {
     if (isModulo10) {
-      modulo10(block, function (digitoVerificador) {
-        if (digitoVerificador == block[block.length - 1]) valid++;
-      });
+      const verifyingDigit = modulo10(block);
+      if (verifyingDigit != block[block.length - 1]) {
+        return res.status(400).json({
+          message: `O digito verificador do bloco ${index + 1} é inválido!`,
+        });
+      }
     } else {
-      modulo11(block, function (digitoVerificador) {
-        if (digitoVerificador == block[block.length - 1]) valid++;
-      });
+      const verifyingDigit = modulo11(block);
+      if (verifyingDigit != block[block.length - 1]) {
+        return res.status(400).json({
+          message: `O digito verificador do bloco ${index + 1} é inválido!`,
+        });
+      }
     }
 
     if (blocks.length == index + 1) {
-      return res.json({ valid: valid == 4 });
+      const amount = getAmount(digitableLine);
+      const barCode = digitableLineToBarCode(digitableLine, "CONVENIO");
+      return res.json({ barCode, amount, expirationDate: "" });
     }
-  });
+    index++;
+  }
 };
 
 module.exports = validateBoletoConvenio;

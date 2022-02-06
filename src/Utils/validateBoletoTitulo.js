@@ -2,6 +2,7 @@ const {
   getExpirationDate,
   getFormatedAmount,
   reverseString,
+  digitableLineToBarCode,
 } = require("./Commons");
 
 const isFieldVerifyingDigitValid = (
@@ -101,8 +102,7 @@ const validateBoletoTitulo = (digitableLine, res) => {
   }
 
   //campo 3
-  const trintae5a44BarCode = digitableLine.slice(21, 31);
-  const field3 = trintae5a44BarCode;
+  const field3 = digitableLine.slice(21, 31);
   const verifiyingDigitField3 = digitableLine.slice(31, 32);
 
   if (!isFieldVerifyingDigitValid(field3, verifiyingDigitField3, 1)) {
@@ -111,22 +111,9 @@ const validateBoletoTitulo = (digitableLine, res) => {
       .json({ message: "O digito verificador do campo 3 é inválido!" });
   }
 
-  //campo 4
-  const verifyingDigitBarCode = digitableLine.slice(32, 33);
-
-  //campo 5
-  const expirationDateFactor = digitableLine.slice(33, 37);
   const amount = digitableLine.slice(37, digitableLine.length);
 
-  const barCode =
-    codeBank +
-    codeCurrency +
-    verifyingDigitBarCode +
-    expirationDateFactor +
-    amount +
-    vintea24BarCode +
-    vinte5a34BarCode +
-    trintae5a44BarCode;
+  const barCode = digitableLineToBarCode(digitableLine, "TITULO");
 
   if (!isVerifyingDigitValid(barCode)) {
     return res.status(400).json({
@@ -134,7 +121,7 @@ const validateBoletoTitulo = (digitableLine, res) => {
     });
   }
 
-  const expirationDate = getExpirationDate(expirationDateFactor);
+  const expirationDate = getExpirationDate(digitableLine);
 
   return res.json({
     barCode,
