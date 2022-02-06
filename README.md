@@ -27,7 +27,7 @@ barCode​ : Os 44 dígitos correspondentes ao código de barras desse boleto
 
 ### Request
 
-GET http://localhost:8080/boleto/21290001192110001210904475617405975870000002000
+GET `http://localhost:8080/boleto/21290001192110001210904475617405975870000002000`
 
 ### Response
 
