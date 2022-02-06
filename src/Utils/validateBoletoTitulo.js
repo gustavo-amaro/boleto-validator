@@ -114,10 +114,7 @@ const getExpirationDate = (digitableLine) => {
  */
 const validateBoletoTitulo = (digitableLine, res) => {
   //campo 1
-  const codeBank = digitableLine.slice(0, 3);
-  const codeCurrency = digitableLine.slice(3, 4);
-  const vintea24BarCode = digitableLine.slice(4, 9);
-  const field1 = codeBank + codeCurrency + vintea24BarCode;
+  const field1 = digitableLine.slice(0, 9);
   const verifiyingDigitField1 = digitableLine.slice(9, 10);
 
   if (!isFieldVerifyingDigitValid(field1, verifiyingDigitField1)) {
@@ -127,8 +124,7 @@ const validateBoletoTitulo = (digitableLine, res) => {
   }
 
   //campo 2
-  const vinte5a34BarCode = digitableLine.slice(10, 20);
-  const field2 = vinte5a34BarCode;
+  const field2 = digitableLine.slice(10, 20);
   const verifiyingDigitField2 = digitableLine.slice(20, 21);
 
   if (!isFieldVerifyingDigitValid(field2, verifiyingDigitField2, 1)) {
@@ -153,7 +149,7 @@ const validateBoletoTitulo = (digitableLine, res) => {
 
   if (!isVerifyingDigitValid(barCode)) {
     return res.status(400).json({
-      message: "O digito verificador do código de barras é inválido!",
+      message: "O dígito verificador do código de barras é inválido!",
     });
   }
 
