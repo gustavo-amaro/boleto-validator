@@ -5,7 +5,7 @@ Um simples validador de boletos.
 ## Requisitos
 
 - Ter o [Node.js](https://nodejs.org/en/) instalado em sua última versão.
-- Ter um gerenciador [npm](https://www.npmjs.com/) ou [yarn](https://yarnpkg.com/)
+- Ter um gerenciador de dependências: [npm](https://www.npmjs.com/) ou [yarn](https://yarnpkg.com/)
 
 ## Como Usar
 
