@@ -4,7 +4,12 @@ const {
   digitableLineToBarCode,
 } = require("./Commons");
 
-const modulo10 = (block, callback) => {
+/**
+ *
+ * @param {string} block
+ * @returns {int|null}
+ */
+const modulo10 = (block) => {
   const blockSize = block.length - 1;
 
   let code = block.substr(0, blockSize);
@@ -49,7 +54,12 @@ const modulo10 = (block, callback) => {
   return null;
 };
 
-const modulo11 = (block, callback) => {
+/**
+ *
+ * @param {string} block
+ * @returns {int|null}
+ */
+const modulo11 = (block) => {
   let blockSize = block.length - 1;
   let roundedFieldMultiplier;
 

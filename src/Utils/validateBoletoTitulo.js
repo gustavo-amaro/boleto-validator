@@ -1,10 +1,16 @@
 const {
-  getExpirationDate,
   getFormatedAmount,
   reverseString,
   digitableLineToBarCode,
 } = require("./Commons");
 
+/**
+ *
+ * @param {string} field
+ * @param {*} verifiyingDigit
+ * @param {1|2} initialMultiplier
+ * @returns {boolean} true se o dígito verificador do campo for válido
+ */
 const isFieldVerifyingDigitValid = (
   field,
   verifiyingDigit,
@@ -36,6 +42,10 @@ const isFieldVerifyingDigitValid = (
   }
 
   const restDivision = fieldMultiplier % 10;
+  /**
+   * (Math.ceil(somatorio / 10) * 10) pega a dezena imediatamente superior ao somatorio
+   * (dezena superior de 25 é 30, a de 43 é 50...).
+   */
   const roundedFieldMultiplier = Math.ceil(fieldMultiplier / 10) * 10;
 
   let validVerifyingDigit = roundedFieldMultiplier - restDivision;
@@ -45,6 +55,11 @@ const isFieldVerifyingDigitValid = (
   return validVerifyingDigit === verifiyingDigit;
 };
 
+/**
+ *
+ * @param {string} barCode
+ * @returns {boolean} true se o dígito verificador do código de barras for válido
+ */
 const isVerifyingDigitValid = (barCode) => {
   const verifyingDigit = parseInt(barCode.slice(4, 5));
   if (verifyingDigit === 0) return false;
@@ -76,6 +91,27 @@ const isVerifyingDigitValid = (barCode) => {
   return validVerifyingDigit === verifyingDigit;
 };
 
+/**
+ *
+ * @param {string} digitableLine
+ * @returns {string} Data de vencimento formatada
+ */
+const getExpirationDate = (digitableLine) => {
+  let expirationDateFactor = digitableLine.slice(33, 37);
+  expirationDateFactor = parseInt(expirationDateFactor);
+  const baseDate = "1997-10-07";
+  const expirationDate = new Date(baseDate);
+  expirationDate.setDate(expirationDate.getDate() + expirationDateFactor);
+
+  return expirationDate.toISOString().slice(0, 10);
+};
+
+/**
+ *
+ * @param {string} digitableLine
+ * @param {*} res
+ * @returns {*} response em json
+ */
 const validateBoletoTitulo = (digitableLine, res) => {
   //campo 1
   const codeBank = digitableLine.slice(0, 3);

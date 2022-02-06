@@ -1,19 +1,19 @@
+/**
+ *
+ * @param {string} string
+ * @returns string ao reverso
+ */
 const reverseString = (string = "") => {
   const splitString = string.split("");
   const reverseStringArray = splitString.reverse();
   return reverseStringArray.join("");
 };
 
-const getExpirationDate = (digitableLine) => {
-  let expirationDateFactor = digitableLine.slice(33, 37);
-  expirationDateFactor = parseInt(expirationDateFactor);
-  const baseDate = "1997-10-07";
-  const expirationDate = new Date(baseDate);
-  expirationDate.setDate(expirationDate.getDate() + expirationDateFactor);
-
-  return expirationDate.toISOString().slice(0, 10);
-};
-
+/**
+ *
+ * @param {string} amount
+ * @returns valor do boleto formatado
+ */
 const getFormatedAmount = (amount) => {
   amount = parseFloat(amount);
   amount = amount / 100;
@@ -21,6 +21,12 @@ const getFormatedAmount = (amount) => {
   return amount.toFixed(2);
 };
 
+/**
+ *
+ * @param {string} digitableLine
+ * @param {'TITULO'|'CONVENIO'} type
+ * @returns código de barras
+ */
 const digitableLineToBarCode = (digitableLine, type) => {
   digitableLine = digitableLine.replace(/[^0-9]/g, "");
 
@@ -49,7 +55,6 @@ const digitableLineToBarCode = (digitableLine, type) => {
 };
 
 module.exports = {
-  getExpirationDate,
   getFormatedAmount,
   reverseString,
   digitableLineToBarCode,
