@@ -6,13 +6,13 @@ const {
 
 /**
  *
- * @param {string} block
+ * @param {string} field
  * @returns {int|null}
  */
-const modulo10 = (block) => {
-  const blockSize = block.length - 1;
+const modulo10 = (field) => {
+  const fieldSize = field.length - 1;
 
-  let code = block.substr(0, blockSize);
+  let code = field.substr(0, fieldSize);
 
   code = reverseString(code);
   code = code.split("");
@@ -56,14 +56,14 @@ const modulo10 = (block) => {
 
 /**
  *
- * @param {string} block
+ * @param {string} field
  * @returns {int|null}
  */
-const modulo11 = (block) => {
-  let blockSize = block.length - 1;
+const modulo11 = (field) => {
+  let fieldSize = field.length - 1;
   let roundedFieldMultiplier;
 
-  let code = block.substr(0, blockSize);
+  let code = field.substr(0, fieldSize);
 
   code = reverseString(code);
   code = code.split("");
@@ -113,12 +113,12 @@ const getAmount = (digitableLine) => {
 };
 
 const validateBoletoConvenio = (digitableLine, res) => {
-  let blocks = [];
+  let fields = [];
 
-  blocks[0] = digitableLine.substr(0, 12);
-  blocks[1] = digitableLine.substr(12, 12);
-  blocks[2] = digitableLine.substr(24, 12);
-  blocks[3] = digitableLine.substr(36, 12);
+  fields[0] = digitableLine.substr(0, 12);
+  fields[1] = digitableLine.substr(12, 12);
+  fields[2] = digitableLine.substr(24, 12);
+  fields[3] = digitableLine.substr(36, 12);
 
   /**
    * Verifica se é o modulo 10 ou modulo 11.
@@ -127,24 +127,24 @@ const validateBoletoConvenio = (digitableLine, res) => {
   let isModulo10 = ["6", "7"].indexOf(digitableLine[2]) != -1;
 
   let index = 0;
-  for (let block of blocks) {
+  for (let field of fields) {
     if (isModulo10) {
-      const verifyingDigit = modulo10(block);
-      if (verifyingDigit != block[block.length - 1]) {
+      const verifyingDigit = modulo10(field);
+      if (verifyingDigit != field[field.length - 1]) {
         return res.status(400).json({
-          message: `O digito verificador do bloco ${index + 1} é inválido!`,
+          message: `O digito verificador do campo ${index + 1} é inválido!`,
         });
       }
     } else {
-      const verifyingDigit = modulo11(block);
-      if (verifyingDigit != block[block.length - 1]) {
+      const verifyingDigit = modulo11(field);
+      if (verifyingDigit != field[field.length - 1]) {
         return res.status(400).json({
-          message: `O digito verificador do bloco ${index + 1} é inválido!`,
+          message: `O digito verificador do campo ${index + 1} é inválido!`,
         });
       }
     }
 
-    if (blocks.length == index + 1) {
+    if (fields.length == index + 1) {
       const amount = getAmount(digitableLine);
       const barCode = digitableLineToBarCode(digitableLine, "CONVENIO");
       return res.json({ barCode, amount, expirationDate: "" });

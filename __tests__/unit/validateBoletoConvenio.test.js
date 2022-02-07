@@ -36,7 +36,7 @@ test("validação de boleto de convênio com linha digitável inválida", () => 
   expect(response.status).toBe(400);
 });
 
-test("validação de boleto com código verificador do bloco 1 inválido", () => {
+test("validação de boleto com código verificador do campo 1 inválido", () => {
   const digitableLine = "836000000014314101380009489879609118000538985086";
   const req = {
     params: { digitableLine },
@@ -53,10 +53,10 @@ test("validação de boleto com código verificador do bloco 1 inválido", () =>
   const response = boletoController.validateBoleto(req, res);
 
   expect(response.status).toBe(400);
-  expect(response.message).toBe("O digito verificador do bloco 1 é inválido!");
+  expect(response.message).toBe("O digito verificador do campo 1 é inválido!");
 });
 
-test("validação de boleto com código verificador do bloco 2 inválido", () => {
+test("validação de boleto com código verificador do campo 2 inválido", () => {
   const digitableLine = "836000000015314101380008489879609118000538985086";
   const req = {
     params: { digitableLine },
@@ -73,10 +73,10 @@ test("validação de boleto com código verificador do bloco 2 inválido", () =>
   const response = boletoController.validateBoleto(req, res);
 
   expect(response.status).toBe(400);
-  expect(response.message).toBe("O digito verificador do bloco 2 é inválido!");
+  expect(response.message).toBe("O digito verificador do campo 2 é inválido!");
 });
 
-test("validação de boleto com código verificador do bloco 3 inválido", () => {
+test("validação de boleto com código verificador do campo 3 inválido", () => {
   const digitableLine = "836000000015314101380009489879609117000538985086";
   const req = {
     params: { digitableLine },
@@ -93,10 +93,10 @@ test("validação de boleto com código verificador do bloco 3 inválido", () =>
   const response = boletoController.validateBoleto(req, res);
 
   expect(response.status).toBe(400);
-  expect(response.message).toBe("O digito verificador do bloco 3 é inválido!");
+  expect(response.message).toBe("O digito verificador do campo 3 é inválido!");
 });
 
-test("validação de boleto com código verificador do bloco 4 inválido", () => {
+test("validação de boleto com código verificador do campo 4 inválido", () => {
   const digitableLine = "836000000015314101380009489879609118000538985085";
   const req = {
     params: { digitableLine },
@@ -113,7 +113,7 @@ test("validação de boleto com código verificador do bloco 4 inválido", () =>
   const response = boletoController.validateBoleto(req, res);
 
   expect(response.status).toBe(400);
-  expect(response.message).toBe("O digito verificador do bloco 4 é inválido!");
+  expect(response.message).toBe("O digito verificador do campo 4 é inválido!");
 });
 
 test("validação de boleto de convênio sem valor e sem vencimento", () => {
